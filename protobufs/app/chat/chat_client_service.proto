@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+import "app/chat/chat_common.proto";
+
+package app.chat;
+
+option csharp_namespace = "App.Protobuf.Chat";
+
+message ClientSendIMMsgRequest {
+	IMMsg Msg = 1;
+}
+
+message ClientSendIMMsgResponse {
+	int32 Ret = 1;
+}
+
+message ClientSyncMsgRequest {
+	int32 Type = 1;
+	int64 LastMsgID = 2;
+	int64 Receiver = 3;
+}
+
+message ClientSyncMsgResponse {
+	int32 Ret = 1;
+}
+
+message ClientGetWorldRoomListRequest {
+}
+
+message ClientGetWorldRoomListResponse {
+	int32 Ret = 1;
+	repeated WorldRoomInfo RoomInfos = 2;
+}
+
+message ClientSwitchWorldRoomRequest {
+	int64 TargetRoomID = 1;
+}
+
+message ClientSwitchWorldRoomResponse {
+	int32 Ret = 1;
+	int64 WorldRoomID = 2;
+}
+
+message ClientSetChatSettingsRequest {
+	repeated int64 special_focus_account_ids = 1;
+	int64 chat_theme_id = 2;
+	int64 chat_bubble_id = 3;
+	int64 chat_frame_id = 4;
+}
+
+message ClientSetChatSettingsResponse {
+	int32 Ret = 1;
+}
+
+message ClientGetChatSettingsRequest {
+}
+
+message ClientGetChatSettingsResponse {
+	int32 Ret = 1;
+	repeated int64 special_focus_account_ids = 2;
+	int64 chat_theme_id = 3;
+	int64 chat_bubble_id = 4;
+	int64 chat_frame_id = 5;
+}
+
+message GetNotificationsRequest {
+}
+
+message GetNotificationsResponse {
+	repeated NotificationInfo notifications = 1;
+}
+
+message ClaimNotificationRequest {
+	int64 notification_id = 1;
+}
+
+message ClaimNotificationResponse {
+	int32 Ret = 1;
+	string message = 2;
+}
+
+service ClientChatService {
+	rpc SendIMMsg (.app.chat.ClientSendIMMsgRequest) returns (.app.chat.ClientSendIMMsgResponse);
+	rpc SyncMsg (.app.chat.ClientSyncMsgRequest) returns (.app.chat.ClientSyncMsgResponse);
+	rpc GetWorldRoomList (.app.chat.ClientGetWorldRoomListRequest) returns (.app.chat.ClientGetWorldRoomListResponse);
+	rpc SwitchWorldRoom (.app.chat.ClientSwitchWorldRoomRequest) returns (.app.chat.ClientSwitchWorldRoomResponse);
+	rpc SetChatSettings (.app.chat.ClientSetChatSettingsRequest) returns (.app.chat.ClientSetChatSettingsResponse);
+	rpc GetChatSettings (.app.chat.ClientGetChatSettingsRequest) returns (.app.chat.ClientGetChatSettingsResponse);
+	rpc GetNotifications (.app.chat.GetNotificationsRequest) returns (.app.chat.GetNotificationsResponse);
+	rpc ClaimNotification (.app.chat.ClaimNotificationRequest) returns (.app.chat.ClaimNotificationResponse);
+}
